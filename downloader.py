@@ -136,6 +136,30 @@ def cleanupFolder(folder):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
+if not os.path.isdir("storage"):
+    os.makedirs("storage")
+    
+if not os.path.isdir("processing"):
+    os.makedirs("processing")  
+    
+if not os.path.isdir("covers"):
+    os.makedirs("covers")  
+    
+if not os.path.isdir("songs"):
+    os.makedirs("songs")  
+
+if not os.path.isfile("storage/format.txt"):
+    with open("storage/format.txt", 'w') as f:
+        f.write("")
+        
+if not os.path.isfile("storage/custom.txt"):
+    with open("storage/custom.txt", 'w') as f:
+        f.write("")
+        
+if not os.path.isfile("storage/blacklist.txt"):
+    with open("storage/blacklist.txt", 'w') as f:
+        f.write("")
+
 file = open("storage/format.txt", "r")
 contents = file.read()
 formats = contents.split("|")
@@ -157,7 +181,9 @@ contents = file.read()
 blacklist = contents.split(",")
 file.close()
 
-playlist = Playlist('https://www.youtube.com/playlist?list=PLI4XurxUlOwKRtaK9SlxR8iVIH0cWNQF9')
+url = input(Fore.MAGENTA+"Enter playlist URL: ")
+
+playlist = Playlist(url)
 print('Number of videos in playlist: %s' % len(playlist.video_urls))
 songAmount = len(playlist.video_urls)
 currSong = 0
@@ -165,20 +191,23 @@ for video in playlist.videos:
     currSong = currSong + 1
     print(str(currSong)+"/"+str(songAmount)+" SONG: "+video.title)
     foundFormat = 0
-    for line in formatArr:
-        if ((line[2] in video.title) and (line[3] in video.title)):
-            getSong_format(line[0], line[1], line[2], line[3], video)
-            foundFormat = 1
-        else: 
-            continue
-        
-    if foundFormat == 0:
-        for line in customArr:
-            if (line[0] == video.title):
-                getSong_custom(line[1], line[2], line[3], video)
+    print(len(formatArr))
+    if os.path.getsize('storage/format.txt') > 0:
+        for line in formatArr:
+            if ((line[2] in video.title) and (line[3] in video.title)):
+                getSong_format(line[0], line[1], line[2], line[3], video)
                 foundFormat = 1
             else: 
                 continue
+            
+    if os.path.getsize('storage/custom.txt') > 0: 
+        if foundFormat == 0:
+            for line in customArr:
+                if (line[0] == video.title):
+                    getSong_custom(line[1], line[2], line[3], video)
+                    foundFormat = 1
+                else: 
+                    continue
             
     if foundFormat == 0:
         print(Fore.YELLOW + video.title + ' has no saved format')
