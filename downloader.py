@@ -192,7 +192,6 @@ for video in playlist.videos:
     currSong = currSong + 1
     print(str(currSong)+"/"+str(songAmount)+" SONG: "+video.title)
     foundFormat = 0
-    print(len(formatArr))
     if os.path.getsize('storage/format.txt') > 0:
         for line in formatArr:
             if ((line[2] in video.title) and (line[3] in video.title)):
