@@ -1,6 +1,7 @@
 import os, shutil
 import mutagen.id3  
 from pytube import Playlist
+import re
 
 from moviepy.editor import *
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -74,9 +75,7 @@ def getSong_format(gameSeries, gameTitle, preText, postText, video):
     # format song name
     songTitle = songTitle.replace(preText, '')
     songTitle = songTitle.replace(postText, '')
-    songTitle = songTitle.replace(".", '')
-    songTitle = songTitle.replace("-", '')
-    songTitle = songTitle.replace("/", '')
+    songTitle = re.sub('[^a-zA-Z \n\.]', '', songTitle) 
     remove_digits = str.maketrans('', '', digits)
     songTitle = songTitle.translate(remove_digits)
     
@@ -96,18 +95,20 @@ def getSong_custom(songTitle, gameSeries, gameTitle, video):
     getSong(video, fileName, songTitle, gameSeries, gameTitle)
     
 def saveFormats(data):
+    print(data)
     with open("storage/format.txt", "w") as txt_file:
         string = ""
         for format in data:
-            arr = ""
-            first = 1
-            for entry in format:
-                if first != 1:
-                    arr = arr + ","
-                else:
-                    first = 0
-                arr = arr + entry
-            string = string + arr + "|"
+            if len(format) > 1:
+                arr = ""
+                first = 1
+                for entry in format:
+                    if first != 1:
+                        arr = arr + ","
+                    else:
+                        first = 0
+                    arr = arr + entry
+                string = string + arr + "|"
         txt_file.write(string[:-1])
         
 def saveCustoms(data):
@@ -168,6 +169,10 @@ for format in formats:
     formatArr.append(format.split(","))
 file.close()
 
+if len(formatArr) == 1:
+    if len(formatArr[0]) < 3:
+        formatArr = []
+
 file = open("storage/custom.txt", "r")
 contents = file.read()
 customs = contents.split("|")
@@ -175,6 +180,10 @@ customArr = []
 for custom in customs:
     customArr.append(custom.split(","))
 file.close()
+
+if len(customArr) == 1:
+    if len(customArr[0]) < 3:
+        customArr = []
 
 file = open("storage/blacklist.txt", "r")
 contents = file.read()
@@ -190,11 +199,12 @@ songAmount = len(playlist.video_urls)
 currSong = 0
 for video in playlist.videos:
     currSong = currSong + 1
-    print(str(currSong)+"/"+str(songAmount)+" SONG: "+video.title)
+    vidTitle = re.sub('[^a-zA-Z0-9 \n\.]', '', video.title)
+    print(str(currSong)+"/"+str(songAmount)+" SONG: "+vidTitle)
     foundFormat = 0
     if os.path.getsize('storage/format.txt') > 0:
         for line in formatArr:
-            if ((line[2] in video.title) and (line[3] in video.title)):
+            if ((line[2] in vidTitle) and (line[3] in vidTitle)):
                 getSong_format(line[0], line[1], line[2], line[3], video)
                 foundFormat = 1
             else: 
@@ -203,14 +213,14 @@ for video in playlist.videos:
     if os.path.getsize('storage/custom.txt') > 0: 
         if foundFormat == 0:
             for line in customArr:
-                if (line[0] == video.title):
+                if (line[0] == vidTitle):
                     getSong_custom(line[1], line[2], line[3], video)
                     foundFormat = 1
                 else: 
                     continue
             
     if foundFormat == 0:
-        print(Fore.YELLOW + video.title + ' has no saved format')
+        print(Fore.YELLOW + vidTitle + ' has no saved format')
         print(Style.RESET_ALL)
         answered = 0
         while (answered == 0):
@@ -228,7 +238,7 @@ for video in playlist.videos:
                 songTitle = input(Fore.MAGENTA+"Enter song title: ")
                 gameSeries = input(Fore.MAGENTA+"Enter game series: ")
                 gameTitle = input(Fore.MAGENTA+"Enter game title: ")
-                customArr.append([video.title, songTitle, gameSeries, gameTitle])
+                customArr.append([vidTitle, songTitle, gameSeries, gameTitle])
                 saveCustoms(customArr)
                 getSong_custom(songTitle, gameSeries, gameTitle, video)
                 answered = 1
