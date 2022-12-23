@@ -73,11 +73,12 @@ def getSong_format(gameSeries, gameTitle, preText, postText, video):
     songTitle = video.title
 
     # format song name
-    songTitle = re.sub('[^a-zA-Z \n\.]', '', songTitle) 
+    songTitle = re.sub('[^a-zA-Z0-9 \n\.]', '', songTitle) 
     songTitle = songTitle.replace(preText, '')
     songTitle = songTitle.replace(postText, '')
     remove_digits = str.maketrans('', '', digits)
     songTitle = songTitle.translate(remove_digits)
+    songTitle = re.sub(' +', ' ', songTitle)
     
     # remove spaces
     prefixed = 0
@@ -202,6 +203,7 @@ currSong = 0
 for video in playlist.videos:
     currSong = currSong + 1
     vidTitle = re.sub('[^a-zA-Z0-9 \n\.]', '', video.title)
+    vidTitle = re.sub(' +', ' ', vidTitle)
     print(str(currSong)+"/"+str(songAmount)+" SONG: "+vidTitle)
     foundFormat = 0
     if os.path.getsize('storage/format.txt') > 0:
