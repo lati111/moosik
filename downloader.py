@@ -182,6 +182,7 @@ blacklist = contents.split(",")
 file.close()
 
 url = input(Fore.MAGENTA+"Enter playlist URL: ")
+print(Style.RESET_ALL)
 
 playlist = Playlist(url)
 print('Number of videos in playlist: %s' % len(playlist.video_urls))
