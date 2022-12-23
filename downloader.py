@@ -74,8 +74,8 @@ def getSong_format(gameSeries, gameTitle, preText, postText, video):
 
     # format song name
     songTitle = re.sub('[^a-zA-Z0-9 \n\.]', '', songTitle) 
-    songTitle = songTitle.replace(preText, '')
-    songTitle = songTitle.replace(postText, '')
+    songTitle = songTitle.replace(re.sub('[^a-zA-Z0-9 \n\.]', '', preText) , '')
+    songTitle = songTitle.replace(re.sub('[^a-zA-Z0-9 \n\.]', '', postText) , '')
     songTitle = songTitle.replace(".", '')
     remove_digits = str.maketrans('', '', digits)
     songTitle = songTitle.translate(remove_digits)
