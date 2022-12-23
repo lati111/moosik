@@ -6,4 +6,11 @@ By using user inputted formatting, it download and sorts the songs in the follow
 - artist: game series  (e.g. Legend of Zelda)
 - album: game title (e.g. Ocarina of Time)
 
+Requires the following:
+- Python3
+- pytube
+- moviepy
+- eyed3
+- colorama
+
 I probably won't really update this much, as this was mostly made for personal use. 
