@@ -95,7 +95,6 @@ def getSong_custom(songTitle, gameSeries, gameTitle, video):
     getSong(video, fileName, songTitle, gameSeries, gameTitle)
     
 def saveFormats(data):
-    print(data)
     with open("storage/format.txt", "w") as txt_file:
         string = ""
         for format in data:
