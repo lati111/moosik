@@ -1,5 +1,6 @@
 import os, re ,csv, sys
 import requests, shutil
+from csv import writer
 
 from tkinter import *
 from tkinter.ttk import *
@@ -38,6 +39,7 @@ def cleanupFolder(folder):
         
 class PlaylistDownloader():
     counterText = None
+    urlInput = None
     playlists = []
     gui = None
     
@@ -120,6 +122,8 @@ class PlaylistDownloader():
             self.counterText.set(str(songCount) + ' / '+str(songAmount))   
             self.gui.window.update() 
         
+        self.counterText.set("Cleaning up files...")
+        self.gui.window.update() 
         cleanupFolder("processing")
         print("playlist downloaded")
         
@@ -128,14 +132,40 @@ class PlaylistDownloader():
     def createPlaylistOption(self, title, url):
         Button(self.gui.window, text = title, width='40', command= lambda: self.downloadPlaylist(title, url)).pack(side = TOP, padx= 20)
     
-    def guiStart(self, gui):
-        self.gui = gui
-        gui.clearWindow()
-        Label(gui.window, text = 'Playlist Downloader', font =('Verdana', 15)).pack(side = TOP, pady = 10)
-        Label(gui.window, text = 'Select a playlist', font =('Verdana', 10)).pack(side = TOP, pady = 10)
+    def addNewPlaylist(self):
+        url = self.urlInput.get()
+        playlist = Playlist(url)
+        List = [playlist.title, url]
+        self.playlists.append(List)
+        
+        with open(r"data\playlists.csv", 'a', newline='\n') as f_object:
+            writer_object = csv.writer(f_object)
+            writer_object.writerow("")
+            writer_object.writerow(List)
+            f_object.close()
+
+        self.openPlaylistList()
+    
+    def openNewPlaylist(self):
+        self.gui.clearWindow()
+        Label(self.gui.window, text = 'New Playlist', font =('Verdana', 15)).pack(side = TOP, pady = 10)
+        Label(self.gui.window, text = 'Please link your youtube playlist', font =('Verdana', 10)).pack(side = TOP, pady = 10)
+        self.urlInput = Entry(self.gui.window, width='45')
+        self.urlInput.pack(side = TOP, padx = 20, pady=10, expand=True)
+        Button(self.gui.window, text = "Add", width='15', command=self.addNewPlaylist).pack(side = TOP, padx= 40, pady = 10)
+    
+    def openPlaylistList(self):
+        self.gui.clearWindow()
+        Label(self.gui.window, text = 'Playlist Downloader', font =('Verdana', 15)).pack(side = TOP, pady = 10)
+        Label(self.gui.window, text = 'Select a playlist', font =('Verdana', 10)).pack(side = TOP, pady = 10)
+        Button(self.gui.window, text = "New Playlist", width='25', command=self.openNewPlaylist).pack(side = TOP, padx= 40)
         
         for playlist in self.playlists[1:]:
             self.createPlaylistOption(playlist[0], playlist[1])
+    
+    def guiStart(self, gui):
+        self.gui = gui
+        self.openPlaylistList()
               
     def getPlaylists(self):
         return self.playlists
