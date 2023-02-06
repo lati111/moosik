@@ -9,6 +9,12 @@ def install(package):
     
 def dependencies():
     try:
+        import pytube
+    except ImportError:
+        install("pytube")
+        import pytube
+
+    try:
         import colorama
     except ImportError:
         install("colorama")
@@ -32,6 +38,10 @@ def dependencies():
         install("eyed3")
         import eyed3
 
+print("Booting up...")
+dependencies()
+import scripts.PlaylistDownloader as PlaylistDownloader
+
 class GUI():
     window = tk.Tk()
     playlistPhoto = PhotoImage(file = r"assets\playlist.png").subsample(5, 5)
@@ -39,18 +49,20 @@ class GUI():
     def __init__(self):
         Label(self.window, text = 'Playlist Downloader', font =('Verdana', 15)).pack(side = TOP, pady = 10)
 
-    def my_command(self):
-        print("Clicked!")
+    def openPlaylistDownloader(self):
+        downloader = PlaylistDownloader.PlaylistDownloader()
+        downloader.guiStart(self)
         
-    def createBtn(self, title, image):
-        Button(self.window, text = title, image = image,compound = BOTTOM, command= self.my_command).pack(side = TOP)
+    def createBtn(self, title, image, command):
+        Button(self.window, text = title, image = image,compound = BOTTOM, command= command).pack(side = TOP)
         
-print("Booting up...")
-dependencies()
+    def clearWindow(self):
+        for widget in self.window.winfo_children():
+            widget.destroy()
 
 print("Launching GUI...")
 gui = GUI()
-gui.createBtn("Playlist Downloader", gui.playlistPhoto)
+gui.createBtn("Playlist Downloader", gui.playlistPhoto, gui.openPlaylistDownloader)
 gui.window.mainloop()
 
 print("Closing...")
