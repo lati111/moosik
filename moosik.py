@@ -45,9 +45,11 @@ import scripts.PlaylistDownloader as PlaylistDownloader
 class GUI():
     window = tk.Tk()
     playlistPhoto = PhotoImage(file = r"assets\playlist.png").subsample(5, 5)
-    
-    def __init__(self):
-        Label(self.window, text = 'Playlist Downloader', font =('Verdana', 15)).pack(side = TOP, pady = 10)
+    returnImage = PhotoImage(file = r"assets\return.png").subsample(15, 15)
+
+    def insertBanner(self, title, targetMethod):
+        Button(self.window, width='25', image=self.returnImage,  command=targetMethod).place(anchor='nw')
+        Label(self.window, text =title, font =('Verdana', 15)).pack(side=TOP)
 
     def openPlaylistDownloader(self):
         downloader = PlaylistDownloader.PlaylistDownloader()
@@ -59,10 +61,16 @@ class GUI():
     def clearWindow(self):
         for widget in self.window.winfo_children():
             widget.destroy()
+            
+    def openMainMenu(self):
+        self.clearWindow()
+        Label(self.window, text = 'Playlist Downloader', font =('Verdana', 15)).pack(side = TOP)
+        self.createBtn("Playlist Downloader", gui.playlistPhoto, gui.openPlaylistDownloader)
 
 print("Launching GUI...")
 gui = GUI()
-gui.createBtn("Playlist Downloader", gui.playlistPhoto, gui.openPlaylistDownloader)
+gui.window.title = "Moosik"
+gui.openMainMenu()
 gui.window.mainloop()
 
 print("Closing...")

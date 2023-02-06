@@ -148,7 +148,7 @@ class PlaylistDownloader():
     
     def openNewPlaylist(self):
         self.gui.clearWindow()
-        Label(self.gui.window, text = 'New Playlist', font =('Verdana', 15)).pack(side = TOP, pady = 10)
+        self.gui.insertBanner("New Playlist", self.openPlaylistList)
         Label(self.gui.window, text = 'Please link your youtube playlist', font =('Verdana', 10)).pack(side = TOP, pady = 10)
         self.urlInput = Entry(self.gui.window, width='45')
         self.urlInput.pack(side = TOP, padx = 20, pady=10, expand=True)
@@ -156,7 +156,7 @@ class PlaylistDownloader():
     
     def openPlaylistList(self):
         self.gui.clearWindow()
-        Label(self.gui.window, text = 'Playlist Downloader', font =('Verdana', 15)).pack(side = TOP, pady = 10)
+        self.gui.insertBanner("Playlist Downloader", self.gui.openMainMenu)
         Label(self.gui.window, text = 'Select a playlist', font =('Verdana', 10)).pack(side = TOP, pady = 10)
         Button(self.gui.window, text = "New Playlist", width='25', command=self.openNewPlaylist).pack(side = TOP, padx= 40)
         
