@@ -1,2 +1,2 @@
 cd E:\Programming\Python stuff\playlistManager
-start py -m downloader
+start py -m moosik

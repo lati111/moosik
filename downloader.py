@@ -49,9 +49,9 @@ def getSong(video, fileName, songTitle, gameSeries, gameTitle):
             with open(music_path, 'r+b') as file:
                 meta = mutagen.File(file, easy=True)
                 meta['title'] = songTitle
-                meta['album'] = gameTitle
-                meta['artist'] = gameSeries
-                meta['albumArtist'] = gameSeries
+                meta['album'] = gameSeries
+                meta['artist'] = gameTitle
+                meta['albumArtist'] = gameTitle
                 meta.save(file)
         
             # set mp3 cover image
