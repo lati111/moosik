@@ -5,3 +5,7 @@
 *.mp3
 *.jpg
 *.csv
+/data*
+/processing*
+/playlists*
+/backup*
