@@ -1,16 +1,3 @@
-# ytGameOstDownloader
-A small python script I wrote to download a playlist of youtube songs, and reformat the name and metadata to display better on my car radio. 
-By using user inputted formatting, it download and sorts the songs in the following format:
-- cover: youtube thumbnail
-- title: song name (removed things like dashes and numbers)
-- artist: game series  (e.g. Legend of Zelda)
-- album: game title (e.g. Ocarina of Time)
-
-Requires the following:
-- Python3
-- pytube
-- moviepy
-- eyed3
-- colorama
-
-I probably won't really update this much, as this was mostly made for personal use. 
+# Moosik
+A collection of small scale utility tools allowing for greater control over your spotify and youtube playlists. Primarily, it allows you to download a playlist in one go, as well as archiving of deleted videos (these will be kept in the `backup` folder for safekeeping, and will not be deleted unless the user does so manually. 
+Currently, features such as formatting are planned, but there is no timetable for that, as this is a hobby project primarily, and Python is not my primary language.
