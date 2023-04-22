@@ -21,22 +21,16 @@ def dependencies():
         import colorama
 
     try:
-        import mutagen
+        import youtube_dl
     except ImportError:
-        install("mutagen")
-        import mutagen
+        install("youtube_dl")
+        import youtube_dl
         
     try:
         import moviepy
     except ImportError:
         install("moviepy")
         import moviepy
-        
-    try:
-        import eyed3
-    except ImportError:
-        install("eyed3")
-        import eyed3
 
 print("Booting up...")
 dependencies()
