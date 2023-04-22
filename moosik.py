@@ -4,6 +4,8 @@ import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
 
+import scripts.playlistDownloader as PlaylistDownloader
+
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
     
@@ -34,7 +36,6 @@ def dependencies():
 
 print("Booting up...")
 dependencies()
-import scripts.PlaylistDownloader as PlaylistDownloader
 
 class GUI():
     window = tk.Tk()
