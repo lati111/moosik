@@ -3,12 +3,25 @@ import subprocess
 import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
+from subprocess import Popen, PIPE, STDOUT
 
 import scripts.playlistDownloader as PlaylistDownloader
 
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+def runCommand(commandArray):
+    result = subprocess.run(
+        commandArray, 
+        stdout=subprocess.PIPE
+    )
+
+    result = result.stdout.splitlines()
+    result = result[-2]
+    result = result.decode('utf-8')
     
+    return result
+
 def dependencies():
     try:
         import pytube
@@ -29,10 +42,31 @@ def dependencies():
         import youtube_dl
         
     try:
+        import spotdl
+    except ImportError:
+        install("spotdl")
+        import spotdl
+        
+    try:
+        import requests
+    except ImportError:
+        install("requests")
+        import requests
+        
+    try:
+        import bs4
+    except ImportError:
+        install("bs4")
+        import bs4
+        
+    try:
         import moviepy
     except ImportError:
         install("moviepy")
         import moviepy
+        
+    p = Popen(["spotdl", "--download-ffmpeg"], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+    p.communicate(input='N'.encode(encoding="utf-8"))
 
 print("Booting up...")
 dependencies()
