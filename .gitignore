@@ -1,4 +1,3 @@
-
 *.txt
 *.pyc
 *.mp4
@@ -9,3 +8,5 @@
 /processing*
 /playlists*
 /backup*
+__pycache__
+/scripts/__pycache__
