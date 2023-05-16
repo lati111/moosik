@@ -37,7 +37,7 @@ def runCommand(commandArray):
     return result
         
 class PlaylistDownloader():
-    spotdlDataSavedPattern = re.compile(r"\b(Saved) [0-9]+ \b(songs to backup/spotDL/)[a-zA-z]+\b(.spotdl)")    
+    spotdlDataSavedPattern = re.compile(r"\b(Saved) [0-9]+ \b(songs to backup/spotDL/)[a-zA-Z0-9 ]+\b(.spotdl)")    
     SAVE_PATH = os.getcwd() + '/backup'
     PLAYLIST_PATH = os.getcwd() + '/playlists'
     TEMP_PATH = os.getcwd() + '/processing'
@@ -131,6 +131,7 @@ class PlaylistDownloader():
         self.SAVE_PATH = 'backup/spotDL/' + self.playlistTitle + '.spotdl'
         self.PLAYLIST_PATH = 'playlists/' + self.playlistTitle + '/'
         output = runCommand(['spotdl', 'save', url, '--save-file', self.SAVE_PATH])
+        print(output)
         
         if self.spotdlDataSavedPattern.match(output):
             with open(self.SAVE_PATH, "r") as metaFile:
