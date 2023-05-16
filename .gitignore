@@ -5,7 +5,7 @@
 *.mp3
 *.jpg
 *.csv
-/data*
+# /data/*
 /processing*
 /playlists*
 /backup*
